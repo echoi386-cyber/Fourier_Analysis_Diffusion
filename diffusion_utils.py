@@ -111,7 +111,7 @@ class GaussianMixture(torch.nn.Module, Sampleable, Density):
         self.register_buffer("means", means)
         self.register_buffer("covs", covs)
         self.register_buffer("weights", weights)
-        self.P = torch.randn((20,self.dim)).to(device)
+        self.P = torch.randn((2,self.dim)).to(device)
         self.P = self.P/torch.norm(self.P, dim=0, keepdim=True)
         #self.discrete = self.sample_projected(2000).to(device)
         self.discrete = self.sample(2000).to(device)
@@ -172,11 +172,11 @@ class GaussianMixture(torch.nn.Module, Sampleable, Density):
         cls, nmodes: int, std: float
     ) -> "GaussianMixture":
         # 4D unit hypersphere samples
-        means = torch.randn(nmodes,20)              # standard normal in R^2
+        means = torch.randn(nmodes,2)              # standard normal in R^2
         means = means / means.norm(dim=1, keepdim=True)  # normalize to unit length
 
         # isotropic covariance
-        covs = torch.diag_embed(torch.ones(nmodes, 20) * std ** 2)
+        covs = torch.diag_embed(torch.ones(nmodes, 2) * std ** 2)
         weights = torch.ones(nmodes) / nmodes
         return cls(means, covs, weights)
 
@@ -475,7 +475,7 @@ class SquareRootBeta(Beta):
         return - 0.5 / (torch.sqrt(1 - t) + 1e-4)
 class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
     def __init__(self, p_data: Sampleable, alpha: Alpha, beta: Beta):
-        aux_dim = 20
+        aux_dim = 2
         p_simple = Gaussian.isotropic(aux_dim, 1.0)
         super().__init__(p_simple, p_data)
         self.alpha = alpha
