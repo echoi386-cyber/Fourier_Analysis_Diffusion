@@ -1,3 +1,4 @@
+# %%
 from abc import ABC, abstractmethod
 from typing import Optional, List, Type, Tuple, Dict
 import math
@@ -474,7 +475,7 @@ class SquareRootBeta(Beta):
         return - 0.5 / (torch.sqrt(1 - t) + 1e-4)
 class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
     def __init__(self, p_data: Sampleable, alpha: Alpha, beta: Beta):
-        #aux_dim = 20
+        aux_dim = 20
         p_simple = Gaussian.isotropic(aux_dim, 1.0)
         super().__init__(p_simple, p_data)
         self.alpha = alpha
@@ -1205,3 +1206,5 @@ def plot_results(results):
     # Save plot as PDF
     # -------------------------------------------------------
     plt.savefig("./convergence.pdf", bbox_inches="tight")
+
+# %%
