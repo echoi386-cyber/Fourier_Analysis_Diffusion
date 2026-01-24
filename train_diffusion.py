@@ -33,6 +33,10 @@ def main():
     #p_data = du.GaussianMixture.symmetric_4D(nmodes=5, std=PARAMS["target_std"]).to(device)
     p_data = du.GaussianMixture.symmetric_2D(nmodes=5, std=PARAMS["target_std"], scale=PARAMS["target_scale"]).to(device)
 
+    print("Compute data stats for Equal SNR")
+    dummy_samples=p_data.sample(10000)
+    data_std=torch.std(dummy_samples, dim=0).to(device)
+    print(f"Data Std: {data_std}")
     # Prepare conditional probability path
     path = du.GaussianConditionalProbabilityPath(
         p_data=p_data,

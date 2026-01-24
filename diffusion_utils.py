@@ -475,8 +475,13 @@ class SquareRootBeta(Beta):
         return - 0.5 / (torch.sqrt(1 - t) + 1e-4)
 class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
     def __init__(self, p_data: Sampleable, alpha: Alpha, beta: Beta):
-        aux_dim = 2
-        p_simple = Gaussian.isotropic(aux_dim, 1.0)
+        if data_std is None:
+            data_std=torch.ones(p_data.dim).to(device)
+        self.data_std=data_std
+        aux_dim = p_data.dim
+        mean=torch.zeros(aux_dim).to(device)
+        cov=torch.diag(self.data_std**2)
+        p_simple=Gaussian(mean, cov)
         super().__init__(p_simple, p_data)
         self.alpha = alpha
         self.beta = beta
@@ -503,6 +508,7 @@ class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
         Returns:
             - x: samples from p_t(x|z), (num_samples, dim)
         """
+        noise=torch.rand_like(z)*self.data_std
         return self.alpha(t)*z+self.beta(t)*torch.randn_like(z) 
         
     def conditional_vector_field(self, x: torch.Tensor, z: torch.Tensor, t: torch.Tensor) -> torch.Tensor:
@@ -529,6 +535,7 @@ class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
         Returns:
             - conditional_score: conditional score (num_samples, dim)
         """ 
+        variance=(self.beta(t)*self.data_std)**2
         return -(x - self.alpha(t)*z)/self.beta(t)**2
 
 class ConditionalVectorFieldODE(ODE):
