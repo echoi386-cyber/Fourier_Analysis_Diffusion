@@ -21,6 +21,15 @@ def main():
     parser.add_argument("--plot", action="store_true", help="Plot flow and score trajectories")
     parser.add_argument("--simulate", action="store_true", help="Simulate flow and score trajectories")
 
+    # Fix: Pass an empty list to parse_args() to prevent it from parsing Jupyter/Colab specific arguments.
+    args = parser.parse_args([])
+    args.train_flow = True
+    args.train_score = True
+    args.compare = True
+    args.plot = True
+    args.simulate = True
+    device = torch.device(args.device)
+    
     args = parser.parse_args([])
     device = torch.device(args.device)
 
