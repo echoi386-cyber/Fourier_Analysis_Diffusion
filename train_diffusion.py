@@ -28,9 +28,7 @@ def main():
     args.compare = True
     args.plot = True
     args.simulate = True
-    device = torch.device(args.device)
-    
-    args = parser.parse_args([])
+
     device = torch.device(args.device)
 
     print(f"Using device: {device}")
@@ -51,10 +49,11 @@ def main():
         p_data=p_data,
         alpha=du.LinearAlpha(),
         beta=du.SquareRootBeta(),
+        data_std=data_std
     ).to(device)
 
     # Shared model hyperparameters
-    dim = 20
+    dim = 2
     hiddens = [64,64,64,64]
 
     flow_model, score_model = None, None
