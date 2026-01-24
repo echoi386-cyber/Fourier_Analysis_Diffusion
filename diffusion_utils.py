@@ -474,7 +474,7 @@ class SquareRootBeta(Beta):
         """ 
         return - 0.5 / (torch.sqrt(1 - t) + 1e-4)
 class GaussianConditionalProbabilityPath(ConditionalProbabilityPath):
-    def __init__(self, p_data: Sampleable, alpha: Alpha, beta: Beta):
+    def __init__(self, p_data: Sampleable, alpha: Alpha, beta: Beta, data_std: torch.Tensor=None):
         if data_std is None:
             data_std=torch.ones(p_data.dim).to(device)
         self.data_std=data_std
