@@ -15,7 +15,7 @@ import seaborn as sns
 from sklearn.datasets import make_moons, make_circles
 import ot
 
-# Constants for the duration of our use of Gaussian conditional probability paths, to avoid polluting the namespace...
+# Constants for the duration of our use of Gaussian conditional probability paths, to avoid polluting the namespace....
 PARAMS = {
     "scale": 15.0,
     "target_scale": 10.0,
