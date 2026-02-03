@@ -139,7 +139,7 @@ def main():
     # -------------------------------
     if args.simulate:
         num_samples = 10000
-        timestep_list = torch.tensor([4,8,16,32,64,128,256])  # sweep values
+        timestep_list = torch.tensor([4,8,16,32,64,128,256])  # sweep values..
 
         results = {}
         if flow_model and False:
